@@ -16,17 +16,11 @@ class TweetCell: UITableViewCell {
   @IBOutlet weak var tweetLabel: UILabel!
   @IBOutlet weak var screenNameLbl: UILabel!
   
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-      profileImageView.layer.cornerRadius = 8
-      profileImageView.clipsToBounds = true
-    }
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    // Initialization code
+    profileImageView.layer.cornerRadius = 8
+    profileImageView.clipsToBounds = true
+  }
 
 }
