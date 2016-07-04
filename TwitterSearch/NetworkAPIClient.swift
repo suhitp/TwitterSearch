@@ -26,6 +26,11 @@ struct NetworkAPIClient {
     let request = client.URLRequestWithMethod("GET", URL: url, parameters: ["q":"#iOS", "count": "20"], error: nil)
     client.sendTwitterRequest(request) { (response, data, error) in
     
+      if let error = error {
+        print("error: \(error.localizedDescription)")
+        return
+      }
+        
       do {
         let json  = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
         if let tweetArray = (json["statuses"] as? [[String: AnyObject]]) {
