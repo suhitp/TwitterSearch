@@ -21,6 +21,7 @@
 		9F6346F21D24FF4800D3A8E7 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6346EE1D24FF4800D3A8E7 /* TwitterCore.framework */; };
 		9F6346F51D2530E200D3A8E7 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6346F41D2530E100D3A8E7 /* Tweet.swift */; };
 		9F6346F71D2530F400D3A8E7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6346F61D2530F400D3A8E7 /* User.swift */; };
+		9F6346FE1D269AE500D3A8E7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6346FD1D269AE500D3A8E7 /* UIImageView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		9F6346EE1D24FF4800D3A8E7 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterCore.framework; sourceTree = "<group>"; };
 		9F6346F41D2530E100D3A8E7 /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		9F6346F61D2530F400D3A8E7 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9F6346FD1D269AE500D3A8E7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				9F6346F81D267B4E00D3A8E7 /* Network */,
 				9F6346FA1D267B7400D3A8E7 /* Others */,
 				9F6346F31D2501FA00D3A8E7 /* Frameworks */,
+				9F6346FD1D269AE500D3A8E7 /* UIImageView+Extension.swift */,
 			);
 			path = TwitterSearch;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			files = (
 				9F6346D61D23A9FA00D3A8E7 /* TwitterSearch.xcdatamodeld in Sources */,
 				9F6346E41D23AC2B00D3A8E7 /* TwitterSearchViewController.swift in Sources */,
+				9F6346FE1D269AE500D3A8E7 /* UIImageView+Extension.swift in Sources */,
 				9F6346E91D23ACC500D3A8E7 /* NetworkAPIClient.swift in Sources */,
 				9F6346F51D2530E200D3A8E7 /* Tweet.swift in Sources */,
 				9F6346CE1D23A9FA00D3A8E7 /* AppDelegate.swift in Sources */,

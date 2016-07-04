@@ -9,11 +9,9 @@
 import UIKit
 
 struct Tweet {
-  let name: String
-  let profileImageUrl: String
-  let screenName: String
   let id: Int
   let text: String
+  let user: User
 }
 
 extension Tweet {
@@ -22,11 +20,9 @@ extension Tweet {
     
     self.id = json["id"] as! Int
     self.text = json["text"] as! String
-    self.name = json["user"]!["name"] as! String
-    self.profileImageUrl = json["user"]!["profile_image_url_https"] as! String
-    self.screenName = json["user"]!["screen_name"] as! String
+    self.user = User(json: json["user"] as! [String: AnyObject])
     
-    guard !name.isEmpty && !profileImageUrl.isEmpty && !screenName.isEmpty && !text.isEmpty else {
+    guard !text.isEmpty else {
       return nil
     }
     

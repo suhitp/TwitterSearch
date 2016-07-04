@@ -10,6 +10,12 @@ import UIKit
 
 struct User {
   let name: String
-  let profile_image: String
+  let profileImageUrl: String
   let screenName: String
+  
+  init(json: [String: AnyObject]) {
+    self.name = json["name"] as! String
+    self.profileImageUrl = json["profile_image_url_https"] as! String
+    self.screenName = json["screen_name"] as! String
+  }
 }

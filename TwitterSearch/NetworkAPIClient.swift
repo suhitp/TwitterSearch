@@ -31,9 +31,13 @@ struct NetworkAPIClient {
         if let tweetArray = (json["statuses"] as? [[String: AnyObject]]) {
           print(tweetArray)
           let tweets = tweetArray.flatMap(Tweet.init)
-          completion(result: tweets)
+          dispatch_async(dispatch_get_main_queue(), { 
+            completion(result: tweets)
+          })
         } else {
-          completion(result: nil)
+          dispatch_async(dispatch_get_main_queue(), {
+            completion(result: nil)
+          })
         }
       } catch let error as NSError {
         print("Fetch failed: \(error.localizedDescription)")

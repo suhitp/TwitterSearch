@@ -18,11 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="155" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BEi-W6-qtz">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="155" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BEi-W6-qtz">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TweetCell" rowHeight="120" id="iJ0-18-WrG" customClass="TweetCell" customModule="TwitterSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="600" height="120"/>
@@ -46,18 +45,17 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPL-TJ-V8P">
-                                                    <rect key="frame" x="103" y="14" width="120" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="251" placeholderIntrinsicWidth="150" placeholderIntrinsicHeight="21" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPL-TJ-V8P">
+                                                    <rect key="frame" x="103" y="14" width="150" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="Wyv-Qs-b7c"/>
-                                                        <constraint firstAttribute="width" constant="120" id="lAp-b1-AdK"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zsX-or-9WU">
-                                                    <rect key="frame" x="231" y="14" width="361" height="21"/>
+                                                    <rect key="frame" x="258" y="14" width="334" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="wQn-8P-hRp"/>
                                                     </constraints>
@@ -76,7 +74,7 @@
                                                 <constraint firstItem="zsX-or-9WU" firstAttribute="top" secondItem="yrB-zq-IYe" secondAttribute="top" constant="14" id="1T8-Jz-APw"/>
                                                 <constraint firstItem="c2b-lc-FUv" firstAttribute="leading" secondItem="FLc-Li-6pv" secondAttribute="trailing" constant="8" id="3TI-u4-dXL"/>
                                                 <constraint firstItem="dPL-TJ-V8P" firstAttribute="top" secondItem="yrB-zq-IYe" secondAttribute="top" constant="14" id="632-qX-DBe"/>
-                                                <constraint firstItem="zsX-or-9WU" firstAttribute="leading" secondItem="dPL-TJ-V8P" secondAttribute="trailing" constant="8" id="9Mg-hh-Nv6"/>
+                                                <constraint firstItem="zsX-or-9WU" firstAttribute="leading" secondItem="dPL-TJ-V8P" secondAttribute="trailing" constant="5" id="9Mg-hh-Nv6"/>
                                                 <constraint firstAttribute="trailing" secondItem="zsX-or-9WU" secondAttribute="trailing" constant="8" id="9Z1-6N-mqL"/>
                                                 <constraint firstItem="c2b-lc-FUv" firstAttribute="bottom" secondItem="yrB-zq-IYe" secondAttribute="bottomMargin" id="IMF-VS-qmJ"/>
                                                 <constraint firstItem="c2b-lc-FUv" firstAttribute="top" secondItem="dPL-TJ-V8P" secondAttribute="bottom" constant="8" id="aR0-8E-UjZ"/>
@@ -111,7 +109,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="MSi-bS-DC5"/>
                     <connections>
-                        <outlet property="tableView" destination="BEi-W6-qtz" id="pXc-gS-4IE"/>
+                        <outlet property="tableView" destination="BEi-W6-qtz" id="vCy-wO-y7V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
