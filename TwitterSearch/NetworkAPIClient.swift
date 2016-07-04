@@ -21,10 +21,16 @@ struct NetworkAPIClient {
     Twitter.sharedInstance().startWithConsumerKey(consumerKey, consumerSecret: secret)
   }
   
-  func loadTweetsForHashtag(hashTag: String, completion: (result: [Tweet]?) -> ()) {
+    func loadTweetsForHashtag(hashTag: String, maxId: Int?, completion: (result: [Tweet]?) -> ()) {
   
-    let request = client.URLRequestWithMethod("GET", URL: url, parameters: ["q":"#iOS", "count": "20"], error: nil)
-    client.sendTwitterRequest(request) { (response, data, error) in
+      var params: [String: String] = ["q":"#iOS", "result_type": "mixed", "count": "50"]
+      if let maxId = maxId {
+           params["max_id"] = String(maxId)
+      }
+        
+      let request = client.URLRequestWithMethod("GET", URL: url, parameters: params, error: nil)
+        
+      client.sendTwitterRequest(request) { (response, data, error) in
     
       if let error = error {
         print("error: \(error.localizedDescription)")
@@ -33,8 +39,8 @@ struct NetworkAPIClient {
         
       do {
         let json  = try NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+        print(json)
         if let tweetArray = (json["statuses"] as? [[String: AnyObject]]) {
-          print(tweetArray)
           let tweets = tweetArray.flatMap(Tweet.init)
           dispatch_async(dispatch_get_main_queue(), { 
             completion(result: tweets)
@@ -47,7 +53,6 @@ struct NetworkAPIClient {
       } catch let error as NSError {
         print("Fetch failed: \(error.localizedDescription)")
       }
-      
     }
   }
 

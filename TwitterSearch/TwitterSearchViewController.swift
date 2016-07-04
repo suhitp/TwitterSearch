@@ -16,6 +16,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
     
     let reuseIdentifier = "TweetCell"
     var tweets = [Tweet]()
+    var maxId: Int?
     var isLoadingTweets = false
     var cache = NSCache()
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
@@ -29,35 +30,52 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
         tableView.estimatedRowHeight = 140
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        refreshControl.tintColor = UIColor(red: 85/255, green: 172/255, blue: 238/255, alpha: 1)
+        /*refreshControl.tintColor = UIColor(red: 85/255, green: 172/255, blue: 238/255, alpha: 1)
         refreshControl.backgroundColor = UIColor.whiteColor()
         refreshControl.addTarget(self, action: #selector(TwitterSearchViewController.refreshTweets), forControlEvents: .ValueChanged)
-        tableView.addSubview(refreshControl)
+        tableView.addSubview(refreshControl)*/
         
         loadTweets()
     }
     
     //MARK: LoadTweets for #iOS tag
     func loadTweets() {
-        
         spinner.center = self.view.center
         spinner.color = UIColor(red: 85/255, green: 172/255, blue: 238/255, alpha: 1)
         spinner.startAnimating()
         spinner.hidesWhenStopped = true
         self.view.addSubview(spinner)
-        
+        tableView.hidden = true
         refreshTweets()
     }
     
     func refreshTweets()  {
-        
+    
         let apiClient = NetworkAPIClient()
-        apiClient.loadTweetsForHashtag("#iOS") { (result) in
+        isLoadingTweets = true
+        
+        apiClient.loadTweetsForHashtag("#iOS", maxId: maxId) { [unowned self] (result) in
+            self.tableView.hidden = false
+            self.tableView.tableFooterView = nil
             if result != nil {
                 self.spinner.stopAnimating()
-                self.tweets += result!
-                self.tableView.reloadData()
-                self.refreshControl.endRefreshing()
+                self.isLoadingTweets = false
+                if self.maxId == nil {
+                    self.tweets = result!
+                    self.tableView.reloadData()
+                } else {
+                    let count = self.tweets.count
+                    self.tweets.appendContentsOf(result!)
+                    
+                    var arrayWithIndexPaths:[NSIndexPath] = []
+                    for index in count..<self.tweets.count {
+                        arrayWithIndexPaths.append(NSIndexPath(forRow: index, inSection: 0))
+                    }
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.insertRowsAtIndexPaths(arrayWithIndexPaths, withRowAnimation: .Automatic)
+                    self.tableView.endUpdates()
+                }
             }
         }
     }
@@ -65,7 +83,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
     //MARK: UItableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tweets.count
+        return tweets.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -94,7 +112,41 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
                 }
             }).resume()
         }
+        
+        if indexPath.row == tweets.count - 1 {
+            if (tweets.count > 0) {
+                maxId = tweet.id
+            }
+            loadMoreTweets()
+        }
+        
         return cell
+    }
+    
+    private func loadMoreTweets() {
+        
+        let footer = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        footer.frame = CGRectMake(0, 0, tableView.bounds.width, 44)
+        footer.backgroundColor = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
+        footer.color = UIColor(red: 85/255, green: 172/255, blue: 238/255, alpha: 1)
+        footer.hidesWhenStopped = true
+        footer.startAnimating()
+        tableView.tableFooterView = footer
+        
+        refreshTweets()
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRectMake(0, 0, tableView.frame.size.width, 44))
+        footerView.backgroundColor = UIColor.whiteColor()
+        return footerView
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if isLoadingTweets == false {
+            return 0
+        }
+        return 44.0
     }
     
 }
