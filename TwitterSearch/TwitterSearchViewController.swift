@@ -21,6 +21,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
     var cache = NSCache()
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
     let refreshControl = UIRefreshControl()
+    var coreDataController: CoreDataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,12 +31,30 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
         tableView.estimatedRowHeight = 140
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        /*refreshControl.tintColor = UIColor(red: 85/255, green: 172/255, blue: 238/255, alpha: 1)
-        refreshControl.backgroundColor = UIColor.whiteColor()
-        refreshControl.addTarget(self, action: #selector(TwitterSearchViewController.refreshTweets), forControlEvents: .ValueChanged)
-        tableView.addSubview(refreshControl)*/
+        let tweetEntity = NSEntityDescription.entityForName("Tweet", inManagedObjectContext: coreDataController.managedObjectContext)
+        let fetchRequest = NSFetchRequest()
+        fetchRequest.entity = tweetEntity
         
-        loadTweets()
+        // Initialize Asynchronous Fetch Request
+        let asynchFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (asynchFetchResult) in
+            if let result = asynchFetchResult.finalResult where result.count > 0 {
+                self.tweets = result as! [Tweet]
+                self.tableView.reloadData()
+            } else {
+                self.loadTweets()
+            }
+        }
+        
+        do {
+            // Execute Asynchronous Fetch Request
+            let asynchFetchResult = try coreDataController.managedObjectContext.executeRequest(asynchFetchRequest)
+            print(asynchFetchResult)
+            
+        } catch {
+            let fetchError = error as NSError
+            print("\(fetchError), \(fetchError.userInfo)")
+        }
+        
     }
     
     //MARK: LoadTweets for #iOS tag
@@ -51,7 +70,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
     
     func refreshTweets()  {
     
-        let apiClient = NetworkAPIClient()
+        let apiClient = NetworkAPIClient(coreDataController: coreDataController)
         isLoadingTweets = true
         
         apiClient.loadTweetsForHashtag("#iOS", maxId: maxId) { [unowned self] (result) in
@@ -89,24 +108,24 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TweetCell
         let tweet = tweets[indexPath.row]
-        cell.nameLabel.text = tweet.user.name
-        cell.screenNameLbl.text = "@\(tweet.user.screenName)"
+        cell.nameLabel.text = tweet.user!.name
+        cell.screenNameLbl.text = "@\(tweet.user!.screenName)"
         cell.tweetLabel.text = tweet.text
         cell.profileImageView.image = UIImage(named: "twitter-logo.png")
         
-        let imageUrl = tweet.user.profileImageUrl
+        let imageUrl = tweet.user!.profileImageUrl
         
-        if (self.cache.objectForKey(imageUrl) != nil){
-            cell.profileImageView.image = self.cache.objectForKey(imageUrl) as? UIImage
+        if (self.cache.objectForKey(imageUrl!) != nil){
+            cell.profileImageView.image = self.cache.objectForKey(imageUrl!) as? UIImage
         } else {
-            let url = NSURL(string: imageUrl)!
+            let url = NSURL(string: imageUrl!)!
             NSURLSession.sharedSession().downloadTaskWithURL(url, completionHandler: { (location, response, error) -> Void in
                 if let data = NSData(contentsOfURL: url){
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if cell == tableView.cellForRowAtIndexPath(indexPath) {
                             let image:UIImage = UIImage(data: data)!
                             cell.profileImageView.image = image
-                            self.cache.setObject(image, forKey:imageUrl)
+                            self.cache.setObject(image, forKey:imageUrl!)
                         }
                     })
                 }
@@ -115,7 +134,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
         
         if indexPath.row == tweets.count - 1 {
             if (tweets.count > 0) {
-                maxId = tweet.id
+                maxId = Int(tweet.id!) - 1
             }
             loadMoreTweets()
         }
