@@ -30,6 +30,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
         
         tableView.estimatedRowHeight = 140
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.hidden = true
         
         let tweetEntity = NSEntityDescription.entityForName("Tweet", inManagedObjectContext: coreDataController.managedObjectContext)
         let fetchRequest = NSFetchRequest()
@@ -39,6 +40,7 @@ class TwitterSearchViewController: UIViewController, UITableViewDataSource, UITa
         let asynchFetchRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (asynchFetchResult) in
             if let result = asynchFetchResult.finalResult where result.count > 0 {
                 self.tweets = result as! [Tweet]
+                self.tableView.hidden = false
                 self.tableView.reloadData()
             } else {
                 self.loadTweets()
