@@ -14,7 +14,7 @@ import CoreData
 
 extension Tweet {
 
-    @NSManaged var id: String?
+    @NSManaged var id: NSNumber?
     @NSManaged var text: String?
     @NSManaged var user: User?
 
